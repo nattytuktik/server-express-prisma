@@ -1,32 +1,27 @@
-// import express, { Application, application } from 'express';
+import { Application, Router } from "express";
+import { SetRoute } from "./interfaces";
 
-// const app = express();
+const startServer = (app: Application, port: number) => {
 
-// app.use(express.json)
+    try {
+        app.listen(port, () => {
+            console.log(`server running! at port ${port}`)
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-// class Server {
+const setRoute = (app: Application, endPointArr: SetRoute[]): void => {
+    if (endPointArr.length === 0) {
 
-//     app: Application
+      return
+    } else {
+      const endPoint = endPointArr[0];
+      endPointArr.shift();
+      app.use(endPoint.endpoint, endPoint.controller);
+      setRoute(app, endPointArr); // Recursively process the next route
+    }
+  };
 
-//     constructor(app: Application) {
-//         this.app = app;
-//     }
-
-//     start(port: string){
-//         try {
-//             this.app.listen(port, () => {
-//                 console.log(
-//                     `server Running!`
-//                 )
-//             })
-//         } catch (error) {
-//             console.error(error)
-//         }
-//     }
-
-//     setController()
-
-
-// }
-
-// export default Server
+export {startServer, setRoute}

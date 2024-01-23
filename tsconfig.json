@@ -12,7 +12,8 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*", "src/types/*"]
+      "*": ["node_modules/*", "src/types/*"],
+      "@/*": ["src/*"]
     },
     "types": ["node"],
     "allowSyntheticDefaultImports": true,

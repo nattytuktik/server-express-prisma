@@ -1,15 +1,23 @@
 import express from 'express';
-import mappingRoute from './routers/mapping'
+import mappingRoute from './routers/profile'
 import room from './routers/room';
+import { setRoute, startServer } from './server';
+import { SetRoute } from './interfaces';
 
 const app = express();
 
 app.use(express.json())
 
-app.use('/', mappingRoute)
-app.use('/room', room)
+const endPointArr: Array<SetRoute> = [
+    {
+        endpoint: '/room',
+        controller: room
+    },
+    {
+        endpoint: '/profile',
+        controller: mappingRoute
+    }
+]
 
-app.listen(8080, () => {
-    console.log(`server running! at port 8080`)
-})
-
+setRoute(app, endPointArr)
+startServer(app, 8080)
