@@ -1,69 +1,15 @@
-import express from 'express'
-import { PrismaClient } from '@prisma/client';
+import express from 'express';
+import mappingRoute from './routers/mapping'
+import room from './routers/room';
 
 const app = express();
 
-const prisma = new PrismaClient();
+app.use(express.json())
 
-app.get("/", async (req, res) => {
-    const main = async () => {
-        const allUsers = await prisma.user.findMany()
-        res.json(allUsers)
-    }
+app.use('/', mappingRoute)
+app.use('/room', room)
 
-
-    main().then( async () => {
-        await prisma.$disconnect()
-    }).catch(async (e) => {
-        console.error(e)
-        await prisma.$disconnect()
-        process.exit(1)
-      })
+app.listen(8080, () => {
+    console.log(`server running! at port 8080`)
 })
-
-app.post('/', async (req, res) => {
-
-    async function main() {
-        await prisma.user.create({
-          data: {
-            name: 'Alice',
-            email: 'alice@prisma.io',
-            posts: {
-              create: { title: 'Hello World' },
-            },
-            profile: {
-              create: { bio: 'I like turtles' },
-            },
-          },
-        })
-      
-        const allUsers = await prisma.user.findMany({
-          include: {
-            posts: true,
-            profile: true,
-          },
-        })
-        console.dir(allUsers, { depth: null })
-      }
-
-      main().then( async () => {
-        await prisma.$disconnect()
-    }).catch(async (e) => {
-        console.error(e)
-        await prisma.$disconnect()
-        process.exit(1)
-      })
-})
-
-const start = async () => {
-    app.listen(3030, () => {
-
-        console.log(
-            `server Running! at port 3030`
-        )
-    })
-}
-
-start()
-
 

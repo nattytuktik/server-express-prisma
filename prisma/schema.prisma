@@ -10,28 +10,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+model Users {
+  id         Int        @id @default(autoincrement())
+  first_name String
+  last_name  String
+  chaya      String
+  status     Boolean    @default(true)
+  profile    Profiles[]
 }
 
-model Profile {
+model Rooms {
+  id      Int        @id @default(autoincrement())
+  room    Int
+  foor    Int
+  profile Profiles[]
+  mitor   Mitors[]
+  status  Boolean    @default(true)
+}
+
+model Profiles {
   id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
+  userId Int
+  user   Users   @relation(fields: [userId], references: [id])
+  roomId Int
+  room   Rooms   @relation(fields: [roomId], references: [id])
+  status Boolean @default(true)
 }
 
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
+model Mitors {
+  id         Int      @id @default(autoincrement())
+  number     String   @db.VarChar(4)
+  roomId     Int
+  room       Rooms    @relation(fields: [roomId], references: [id])
+  createDate DateTime @default(now())
 }
