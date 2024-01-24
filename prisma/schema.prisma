@@ -1,44 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+model mitors {
+  id         Int      @id @default(autoincrement())
+  number     Int
+  roomId     Int
+  createDate DateTime @default(now())
+  status     Boolean  @default(true)
+  rooms      rooms    @relation(fields: [roomId], references: [id], map: "Mitors_roomId_fkey")
+
+  @@index([roomId], map: "Mitors_roomId_fkey")
 }
 
-model Users {
+model profiles {
+  id     Int     @id @default(autoincrement())
+  userId Int
+  roomId Int
+  status Boolean @default(true)
+  rooms  rooms   @relation(fields: [roomId], references: [id], map: "Profiles_roomId_fkey")
+  users  users   @relation(fields: [userId], references: [id], map: "Profiles_userId_fkey")
+
+  @@index([roomId], map: "Profiles_roomId_fkey")
+  @@index([userId], map: "Profiles_userId_fkey")
+}
+
+model rooms {
+  id       Int        @id @default(autoincrement())
+  room     Int
+  foor     Int
+  status   Boolean    @default(true)
+  mitors   mitors[]
+  profiles profiles[]
+}
+
+model users {
   id         Int        @id @default(autoincrement())
   first_name String
   last_name  String
   chaya      String?
   status     Boolean    @default(true)
-  profile    Profiles[]
-}
-
-model Mitors {
-  id         Int      @id @default(autoincrement())
-  number     Int
-  roomId     Int
-  room       Rooms    @relation(fields: [roomId], references: [id])
-  createDate DateTime @default(now())
-  status     Boolean  @default(true)
-}
-
-model Rooms {
-  id      Int        @id @default(autoincrement())
-  room    Int
-  foor    Int
-  status  Boolean    @default(true)
-  profile Profiles[]
-  mitor   Mitors[]
-}
-
-model Profiles {
-  id     Int     @id @default(autoincrement())
-  userId Int
-  user   Users   @relation(fields: [userId], references: [id])
-  roomId Int
-  room   Rooms   @relation(fields: [roomId], references: [id])
-  status Boolean @default(true)
+  profiles   profiles[]
 }

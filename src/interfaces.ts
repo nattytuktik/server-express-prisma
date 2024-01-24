@@ -6,14 +6,16 @@ export interface SetRoute {
 }
 
 export interface Room {
-    room: number;
-    foor: number;
+  id: number | null;
+  room: number;
+  foor: number;
 }
 
 export interface User {
-    first_name: string;
-    last_name: string;
-    chaya?: string | null ;
+  id: number | null;
+  first_name: string;
+  last_name: string;
+  chaya?: string | null;
 }
 
 export interface Mitor {

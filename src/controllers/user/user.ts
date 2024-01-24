@@ -2,7 +2,7 @@
 import { Request, Response } from "express"
 import { PrismaClient } from "@prisma/client"
 
-export const mappingRoomUser = async function (req: Request, res: Response) {
+const mappingRoomUser = async function (req: Request, res: Response) {
 
     const { user, room } = req.body
 
@@ -22,8 +22,6 @@ export const mappingRoomUser = async function (req: Request, res: Response) {
             id: true
         }
     })
-
-
-
-
 }
+
+export default mappingRoomUser
