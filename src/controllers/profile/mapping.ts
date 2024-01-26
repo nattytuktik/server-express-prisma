@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import { Room, User } from "@/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-
-const mappingRoom = async (
+const mappingProfile = async (
     req: Request<{}, {}, { user: User, room: Room }>,
     res: Response) => {
 
@@ -15,6 +14,7 @@ const mappingRoom = async (
     try {
 
         if (user.id && room.id) {
+            // create profile
             prisma.profiles.create({
                 data: {
                     userId: user.id,
@@ -34,4 +34,4 @@ const mappingRoom = async (
         console.log(error)
     }
 }
-export default mappingRoom
+export default mappingProfile
