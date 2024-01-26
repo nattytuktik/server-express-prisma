@@ -14,22 +14,24 @@ const mappingRoom = async (
     const prisma = new PrismaClient()
     try {
 
-        // create new Rooms
-
-        const createRoom = await prisma.rooms.create({
-            data: {
-                room: room.room,
-                foor: room.foor
-            }
-        })
-
-
-
+        if (user.id && room.id) {
+            prisma.profiles.create({
+                data: {
+                    userId: user.id,
+                    roomId: room.id
+                }
+            })
+                .then(result => {
+                    res.status(200).send(`create profile successefully!`)
+                })
+                .catch(error => {
+                    res.status(500).send(`PRISMA.PROFILES.CREATE ERROR at ${__dirname}`)
+                })
+        } else {
+            res.status(500).send(`some bug at middleware or ${__dirname}`)
+        }
     } catch (error) {
         console.log(error)
     }
-
-
-
 }
 export default mappingRoom

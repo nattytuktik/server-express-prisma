@@ -20,6 +20,9 @@ const checkingRoom = async (req: Request<any, any, { room: Room }>, res: Respons
     // Handdle
     try {
 
+        /**
+         * findRoom => Oject<room> ||  Null
+         */
         const findRoom = await prisma.rooms.findFirst({
             where: {
                 room: room.room,
@@ -32,6 +35,7 @@ const checkingRoom = async (req: Request<any, any, { room: Room }>, res: Respons
 
         prisma.$disconnect()
         /**
+         * when have record in table
          * add room.id => req.body.room
          */
         if (findRoom) {
@@ -40,9 +44,23 @@ const checkingRoom = async (req: Request<any, any, { room: Room }>, res: Respons
         }
 
         /**
-         *  create new room at next()
+         *  create new room 
          */
         else {
+            const createRoom = await prisma.rooms.create({
+                data: {
+                    room: room.room,
+                    foor: room.foor
+                }
+            })
+
+            /**
+             * asign room.id into request.body.room
+             */
+
+            req.body.room.id = createRoom.id
+
+
             next()
         }
     } catch (error) {

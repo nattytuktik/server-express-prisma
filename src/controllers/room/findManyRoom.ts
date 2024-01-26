@@ -11,7 +11,7 @@ export default async function (req: Request, res: Response) {
 
     if (!findManyRoom) {
         res.status(200).send("no user in rooms table database")
-    }else {
+    } else {
         res.json(findManyRoom)
     }
 }
