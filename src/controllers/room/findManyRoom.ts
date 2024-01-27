@@ -1,17 +1,48 @@
 
-import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
-export default async function (req: Request, res: Response) {
+import { Request, Response } from "express"
+import prisma from '../../prisma'
 
-    const prisma = new PrismaClient();
+const FindRooms = async (req: Request, res: Response) => {
+    try {
 
-    const findManyRoom = await prisma.rooms.findMany().catch((err) => {
-        console.log(err)
-    })
+        const query = req.query
 
-    if (!findManyRoom) {
-        res.status(200).send("no user in rooms table database")
-    } else {
-        res.json(findManyRoom)
+        if (query.id) {
+            const searchObj = {
+                id: Number(query.id),
+                status: true
+            }
+            const findRoom = await prisma.rooms.findFirst({
+                where: searchObj
+            }).catch((error) => {
+                console.log(error)
+                res.status(500).send(`ERROR :: ${__dirname}`)
+            })
+
+            if (findRoom) {
+                res.status(200).json(findRoom)
+            } else {
+                res.json([])
+            }
+        } else {
+            const findManyRoom = await prisma.rooms.findMany({
+                where: {
+                    status: true
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
+
+            if (!findManyRoom) {
+                res.status(200).send("no user in rooms table database")
+            } else {
+                res.json(findManyRoom)
+            }
+        }
+    } catch (error) {
+        res.status(500).send(error)
+        console.log(error)
     }
 }
+
+export default FindRooms

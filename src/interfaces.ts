@@ -1,3 +1,4 @@
+
 import { Router } from "express";
 
 export interface SetRoute {
@@ -6,13 +7,13 @@ export interface SetRoute {
 }
 
 export interface Room {
-  id: number | null;
+  id: number
   room: number;
   foor: number;
 }
 
 export interface User {
-  id: number | null;
+  id: number
   first_name: string;
   last_name: string;
   chaya?: string | null;

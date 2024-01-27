@@ -1,12 +1,9 @@
 
 import { Request, Response } from "express"
-import { PrismaClient } from "@prisma/client"
-
+import prisma from "../../prisma";
 const mappingRoomUser = async function (req: Request, res: Response) {
 
     const { user, room } = req.body
-
-    const prisma = new PrismaClient();
 
     const createUser = await prisma.users.create({
         data: {

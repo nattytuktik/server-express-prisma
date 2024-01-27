@@ -1,14 +1,19 @@
 
 import { Request, Response } from "express"
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../prisma";
 
 export default async function (req: Request, res: Response) {
     const { room, foor } = req.body;
-
-    if (Number(room) > 11 || Number(foor) > 3) {
+    const validRoom = {
+        maxRoom: 11,
+        maxFoor: 3
+    }
+    if (Number(room) > validRoom.maxRoom || Number(foor) > validRoom.maxFoor) {
+        // return not validate content
         res.status(400).send(`room and foor not valid room: ${room} foor: ${foor}`)
     } else {
-        const prisma = new PrismaClient()
+
+
 
         const findRecorded = await prisma.rooms.findFirst({
             where: {
@@ -34,12 +39,10 @@ export default async function (req: Request, res: Response) {
                 prisma.$disconnect
                 res.json(result)
             }).catch((error: any) => {
-
-                prisma.$disconnect
                 res.status(500).send(error)
             })
-
         }
+        prisma.$disconnect
     }
 
 

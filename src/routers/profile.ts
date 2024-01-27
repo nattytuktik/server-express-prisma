@@ -1,11 +1,17 @@
 
 import { Router } from "express";
-import mappingRoomUser from "../controllers/user/user";
 import checkingRoom from "../middlewares/profile/checkingRoom";
 import findUserMapping from "../middlewares/user/findUserFormapping";
-import mappingProfile from "../controllers/profile/mapping";
+import mappingProfile from "../controllers/profile/updateProfile";
+import findProfiles from "../controllers/profile/findProfilles";
+import DropProfile from "../controllers/profile/dropProfile";
+import UpdateProfile from "../controllers/profile/updateProfile";
 const profile = Router();
 
-profile.get('/', mappingRoomUser)
-profile.post('/', findUserMapping, checkingRoom, mappingProfile)
+profile
+    .get('/', findProfiles)
+    .post('/', findUserMapping, checkingRoom, mappingProfile)
+    .delete('/', DropProfile)
+    .put('/', UpdateProfile)
+
 export default profile

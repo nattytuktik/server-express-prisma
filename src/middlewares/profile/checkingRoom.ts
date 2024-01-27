@@ -1,5 +1,5 @@
 
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../prisma";
 import { Room } from "@/interfaces";
 import { Request, Response, NextFunction } from "express";
 
@@ -15,54 +15,58 @@ import { Request, Response, NextFunction } from "express";
 const checkingRoom = async (req: Request<any, any, { room: Room }>, res: Response, next: NextFunction) => {
 
     const { room } = req.body;
-    const prisma = new PrismaClient();
 
     // Handdle
     try {
 
-        /**
-         * findRoom => Oject<room> ||  Null
-         */
-        const findRoom = await prisma.rooms.findFirst({
-            where: {
-                room: room.room,
-                foor: room.foor
-            },
-            select: {
-                id: true
-            }
-        })
-
-        prisma.$disconnect()
-        /**
-         * when have record in table
-         * add room.id => req.body.room
-         */
-        if (findRoom) {
-            req.body.room.id = findRoom.id
+        if (room.id) {
             next()
-        }
+        } else {
 
-        /**
-         *  create new room 
-         */
-        else {
-            const createRoom = await prisma.rooms.create({
-                data: {
+            /**
+             * findRoom => Oject<room> ||  Null
+             */
+            const findRoom = await prisma.rooms.findFirst({
+                where: {
                     room: room.room,
                     foor: room.foor
+                },
+                select: {
+                    id: true
                 }
             })
 
             /**
-             * asign room.id into request.body.room
+             * when have record in table
+             * add room.id => req.body.room
              */
+            if (findRoom) {
+                req.body.room.id = findRoom.id
+                next()
+            }
 
-            req.body.room.id = createRoom.id
+            /**
+             *  create new room 
+             */
+            else {
+                const createRoom = await prisma.rooms.create({
+                    data: {
+                        room: room.room,
+                        foor: room.foor
+                    }
+                })
+
+                /**
+                 * asign room.id into request.body.room
+                 */
+
+                req.body.room.id = createRoom.id
 
 
-            next()
+                next()
+            }
         }
+
     } catch (error) {
         console.log(error)
         res.status(500)
