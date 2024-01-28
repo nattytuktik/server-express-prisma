@@ -1,7 +1,7 @@
 
 import { Request, Response, NextFunction } from "express";
 import prisma from "../../prisma";
-import { Room, User } from "@/interfaces";
+import { Room, User } from "../../interfaces";
 const findUserMapping = async (req: Request<{}, {}, { user: User, room: Room }>, res: Response, next: NextFunction) => {
 
     try {

@@ -1,6 +1,6 @@
 
 import prisma from "../../prisma";
-import { Room } from "@/interfaces";
+import { Room } from "../../interfaces";
 import { Request, Response, NextFunction } from "express";
 
 /**

@@ -13,6 +13,7 @@ const UpdateQuery = (config: UpdateConfig) => {
         const data = {
             ...req.body.data
         }
+
         if (!reqId) {
             res.status(400).send('Missing id parameter');
             return;
