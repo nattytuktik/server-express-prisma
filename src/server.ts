@@ -30,4 +30,7 @@ const setRoute = (app: Application, endPointArr: SetRoute[]): void => {
   }
 };
 
-export { startServer, setRoute }
+export {
+  startServer,
+  setRoute
+}

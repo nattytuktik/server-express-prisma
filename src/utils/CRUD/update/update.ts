@@ -1,6 +1,6 @@
 
 import { Request, Response } from 'express';
-import { PrismaModelConfig } from '../interfaces/model'
+import { PrismaModelConfig } from '../../interfaces/model'
 
 
 const UpdateQuery = (config: UpdateConfig) => {

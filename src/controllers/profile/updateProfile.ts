@@ -1,7 +1,7 @@
 import prisma from "../../prisma";
-import UpdateQuery from "../../lib/update/update";
+import UpdateQuery from "../../utils/CRUD/update/update";
 import checkRequestBody from "../../middlewares/profile/chekcRequestBody";
-import { ConfigRouter } from "../../lib/controllers/mappignRouter";
+import { ConfigRouter } from "../../utils/controllers/mappignRouter";
 const UpdateProfileCont = UpdateQuery({
     prisma: prisma,
     model: "profiles"

@@ -1,6 +1,6 @@
 
-import { ConfigRouter } from "../../lib/controllers/mappignRouter";
-import DropQuery from "../../lib/delate/drop";
+import { ConfigRouter } from "../../utils/controllers/mappignRouter";
+import DropQuery from "../../utils/CRUD/delate/drop";
 import prisma from "../../prisma";
 
 const dropProfile = DropQuery(

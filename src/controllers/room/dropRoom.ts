@@ -1,5 +1,5 @@
 
-import DropQuery from '../../lib/delate/drop';
+import DropQuery from '../../utils/CRUD/delate/drop';
 import prisma from '../../prisma';
 const DropRoom = DropQuery({
     prisma: prisma,

@@ -44,7 +44,7 @@ const FindRooms = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
-import { ConfigRouter } from '../../lib/controllers/mappignRouter';
+import { ConfigRouter } from '../../utils/controllers/mappignRouter';
 
 const FindRoom: ConfigRouter = {
     path: '/',

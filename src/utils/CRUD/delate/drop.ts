@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 
-import { PrismaModelConfig } from '../interfaces/model';
+import { PrismaModelConfig } from '../../interfaces/model';
 
 const DropQuery = (config: PrismaModelConfig) => {
     const { prisma, model } = config;

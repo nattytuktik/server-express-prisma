@@ -1,58 +1,20 @@
-import { ConfigRouter } from '../../lib/controllers/mappignRouter';
-
-import { Request, Response } from "express"
+import { ConfigRouter } from '../../utils/controllers/mappignRouter';
+import { Create } from '../../utils/CRUD/create/create';
 import prisma from "../../prisma";
+import validNumberRoom from '../../middlewares/room/validNumberRoom';
 
-
-const createRoom = async function (req: Request, res: Response) {
-    const { room, foor } = req.body;
-    const validRoom = {
-        maxRoom: 11,
-        maxFoor: 3
-    }
-    if (Number(room) > validRoom.maxRoom || Number(foor) > validRoom.maxFoor) {
-        // return not validate content
-        res.status(400).send(`room and foor not valid room: ${room} foor: ${foor}`)
-    } else {
-
-        const findRecorded = await prisma.rooms.findFirst({
-            where: {
-                room: room,
-                foor: foor
-            },
-            select: {
-                id: true
-            }
-        })
-
-        if (findRecorded) {
-            res.status(400).send('bad request')
-        } else {
-
-            await prisma.rooms.create({
-                data: {
-                    room: room,
-                    foor: foor
-                }
-            }).then((result: any) => {
-
-                prisma.$disconnect
-                res.json(result)
-            }).catch((error: any) => {
-                res.status(500).send(error)
-            })
-        }
-        prisma.$disconnect
-    }
-}
+const CreateRoomCont = Create({
+    model: "rooms",
+    prisma
+})
 
 
 const CreateRoom: ConfigRouter = {
-    path: '/',
-    method: "get",
-    controller: createRoom,
+    path: 'room/',
+    method: "post",
+    controller: CreateRoomCont,
     middleware: [
-
+        validNumberRoom
     ]
 
 }
