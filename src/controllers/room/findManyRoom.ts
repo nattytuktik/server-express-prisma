@@ -44,5 +44,18 @@ const FindRooms = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
+import { ConfigRouter } from '../../lib/controllers/mappignRouter';
 
-export default FindRooms
+const FindRoom: ConfigRouter = {
+    path: '/',
+    method: "get",
+    controller: FindRooms,
+    middleware: [
+
+    ]
+}
+
+export {
+    FindRoom
+}
+// export default FindRooms 

@@ -1,19 +1,20 @@
-import checkRequestBody from "../../middlewares/profile/chekcRequestBody";
+
+import { ConfigRouter } from "../../lib/controllers/mappignRouter";
 import DropQuery from "../../lib/delate/drop";
 import prisma from "../../prisma";
 
-const DropProfile = DropQuery(
+const dropProfile = DropQuery(
     {
         prisma: prisma,
         model: 'profiles'
     }
 )
 // i preform for dynamic crateRoute by functional
-const expDropProfile = {
+const DropProfile: ConfigRouter = {
     method: 'delete',
     path: '/',
-    DropProfile,
-    middleWare: [
+    controller: dropProfile,
+    middleware: [
 
     ]
 }

@@ -1,8 +1,10 @@
+import { ConfigRouter } from '../../lib/controllers/mappignRouter';
 
 import { Request, Response } from "express"
 import prisma from "../../prisma";
 
-export default async function (req: Request, res: Response) {
+
+const createRoom = async function (req: Request, res: Response) {
     const { room, foor } = req.body;
     const validRoom = {
         maxRoom: 11,
@@ -12,8 +14,6 @@ export default async function (req: Request, res: Response) {
         // return not validate content
         res.status(400).send(`room and foor not valid room: ${room} foor: ${foor}`)
     } else {
-
-
 
         const findRecorded = await prisma.rooms.findFirst({
             where: {
@@ -44,7 +44,17 @@ export default async function (req: Request, res: Response) {
         }
         prisma.$disconnect
     }
+}
 
 
+const CreateRoom: ConfigRouter = {
+    path: '/',
+    method: "get",
+    controller: createRoom,
+    middleware: [
+
+    ]
 
 }
+
+export { CreateRoom }

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import prisma from '../../prisma';
+import { ConfigRouter } from '../../lib/controllers/mappignRouter';
 const findProfiles = async (req: Request, res: Response) => {
     // 
     try {
@@ -31,4 +32,15 @@ const findProfiles = async (req: Request, res: Response) => {
     }
 }
 
-export default findProfiles
+
+
+
+const FindProfiles: ConfigRouter = {
+    method: 'get',
+    path: '/',
+    controller: findProfiles,
+    middleware: [
+
+    ]
+}
+export default FindProfiles

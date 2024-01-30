@@ -1,29 +1,32 @@
 import { Router, NextFunction, Request, Response } from "express";
 
-const CreateRouter = (routerHandle: RouterHandle, configRouter: ConfigRouter) => {
-    const { router, path, method } = configRouter;
-    const { middleware, controller } = routerHandle;
-    return router[method](path, ...middleware, controller)
-}
+const CreateRouter = (router: Router, configRouters: ConfigRouter[]): any => {
 
+    const lenConfig = configRouters.length;
+    if (lenConfig == 0) {
+        return
+    } else {
+        const config = configRouters.shift();
 
-
-
-
-
-export interface RouterHandle {
-    middleware: Array<(req: Request, res: Response, next: NextFunction) => void>
-    controller: (req: Request, res: Response) => void
+        if (config) {
+            const { controller, middleware, method, path } = config;
+            console.log(middleware)
+            router[method](path, ...middleware, controller);
+            return CreateRouter(router, configRouters)
+        } else {
+            console.log('have some bug ij Createrouter Function :: ', __dirname)
+            return
+        }
+    }
 }
 
 export interface ConfigRouter {
-    router: Router,
+    middleware: Array<(req: Request, res: Response, next: NextFunction) => void>
+    controller: (req: Request, res: Response) => void
     method: "get" | "post" | "delete" | "put"
     path: string,
 }
 
-
 export {
     CreateRouter,
-
 }
