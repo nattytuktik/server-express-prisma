@@ -15,7 +15,7 @@ const UpdateQuery = (config: UpdateConfig) => {
         }
 
         if (!reqId) {
-            res.status(400).send('Missing id parameter');
+            res.status(400).send('Missing id qurey string');
             return;
         }
 
