@@ -1,49 +1,81 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model mitors {
-  id         Int      @id @default(autoincrement())
-  number     Int
-  roomId     Int
-  createDate DateTime @default(now())
-  status     Boolean  @default(true)
-  rooms      rooms    @relation(fields: [roomId], references: [id], map: "Mitors_roomId_fkey")
-
-  @@index([roomId], map: "Mitors_roomId_fkey")
+generator client {
+  provider = "prisma-client-js"
 }
 
-model profiles {
-  id     Int     @id @default(autoincrement())
-  userId Int
-  roomId Int
-  status Boolean @default(true)
-  rooms  rooms   @relation(fields: [roomId], references: [id], map: "Profiles_roomId_fkey")
-  users  users   @relation(fields: [userId], references: [id], map: "Profiles_userId_fkey")
-
-  @@index([roomId], map: "Profiles_roomId_fkey")
-  @@index([userId], map: "Profiles_userId_fkey")
-}
-
-model rooms {
-  id       Int        @id @default(autoincrement())
-  room     Int
-  foor     Int
-  status   Boolean    @default(true)
-  mitors   mitors[]
-  profiles profiles[]
-}
-
-model users {
+model Users {
   id         Int        @id @default(autoincrement())
   first_name String
   last_name  String
   chaya      String?
   status     Boolean    @default(true)
-  profiles   profiles[]
+  profile    Profiles[]
+  config     Configs[]
+  TIMECEATE  DateTime   @default(now())
+}
+
+model Mitors {
+  id         Int      @id @default(autoincrement())
+  number     Int
+  roomId     Int
+  room       Rooms    @relation(fields: [roomId], references: [id])
+  createDate DateTime @default(now())
+  status     Boolean  @default(true)
+  TIMECEATE  DateTime @default(now())
+}
+
+model Rooms {
+  id        Int        @id @default(autoincrement())
+  room      Int
+  foor      Int
+  status    Boolean    @default(true)
+  profile   Profiles[]
+  mitor     Mitors[]
+  TIMECEATE DateTime   @default(now())
+}
+
+model Profiles {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  user       Users    @relation(fields: [userId], references: [id])
+  roomId     Int
+  room       Rooms    @relation(fields: [roomId], references: [id])
+  status     Boolean  @default(true)
+  internet   Boolean  @default(false)
+  TIMECREATE DateTime @default(now())
+}
+
+model Configs {
+  id              Int        @id @default(autoincrement())
+  multiply_number Int
+  FT              Int
+  chart           Int
+  userId          Int
+  user            Users      @relation(fields: [userId], references: [id])
+  TIMMECREATE     DateTime   @default(now())
+  invoice         Invoices[]
+}
+
+model Invoices {
+  id        Int      @id @default(autoincrement())
+  configId  Int
+  config    Configs  @relation(fields: [configId], references: [id])
+  TIMECEATE DateTime @default(now())
+}
+
+model Invoice_list {
+  id         Int          @id @default(autoincrement())
+  status     Boolean      @default(true)
+  state      Paymentstate @default(OVERDUE)
+  TIMECREATE DateTime     @default(now())
+}
+
+enum Paymentstate {
+  PAY
+  OVERDUE
+  IMPAY
 }
